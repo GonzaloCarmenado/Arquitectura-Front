@@ -10,7 +10,7 @@ import { AddEditComponent } from '../add-edit/add-edit.component';
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
-  standalone: false
+  standalone: false,
 })
 export class ListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) private readonly paginatorCR!: MatPaginator;
@@ -21,16 +21,14 @@ export class ListComponent implements AfterViewInit {
   constructor(
     private readonly constructorService: ClientListConstructorService,
     private readonly accessService: ClientListAccessService,
-    private readonly dialogService: MatDialog,
-  ) {
-  }
+    private readonly dialogService: MatDialog
+  ) {}
 
   public ngAfterViewInit(): void {
-    this.initTableData()
+    this.initTableData();
   }
 
   //test
-
 
   //#region Inicialización de librerias
   private async initTableData(): Promise<void> {
@@ -40,23 +38,25 @@ export class ListComponent implements AfterViewInit {
       this.tableClientsData.data = await this.getClientList();
       this.tableClientsData.paginator = this.paginatorCR;
     });
-
   }
   //#endregion Inicialización de librerias
 
   //#region Funciones de callback
 
-  public async openActionButonClientTable(clientData: ClientModel, type: number): Promise<void> {
-    if(type === 1){
+  public async openActionButonClientTable(
+    clientData: ClientModel,
+    type: number
+  ): Promise<void> {
+    if (type === 1) {
       this.openClientModal(clientData);
-    }else if( type === 2){
-      debugger
-      let deletedClient:number = await this.deleteClientList(Number(clientData.id));
-      if(deletedClient === 200){
+    } else if (type === 2) {
+      const deletedClient: number = await this.deleteClientList(
+        Number(clientData.id)
+      );
+      if (deletedClient === 200) {
         this.initTableData();
       }
     }
-
   }
   //#endregion Funciones de callback
 
@@ -65,10 +65,10 @@ export class ListComponent implements AfterViewInit {
     const dialogRef = this.dialogService.open(AddEditComponent, {
       width: '900px',
       height: '600px',
-      data: clientData?.id ?? null
+      data: clientData?.id ?? null,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.initTableData();
       }
@@ -81,7 +81,7 @@ export class ListComponent implements AfterViewInit {
     return this.accessService.getClientList();
   }
 
-  private async deleteClientList(id:number): Promise<number> {
+  private async deleteClientList(id: number): Promise<number> {
     return this.accessService.deleteClient(id);
   }
   //#endregion Acceso a datos
