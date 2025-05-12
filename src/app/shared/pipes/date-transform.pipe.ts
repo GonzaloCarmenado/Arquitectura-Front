@@ -2,10 +2,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'formatDate'
+  name: 'formatDate',
 })
 export class FormatDatePipe implements PipeTransform {
-  transform(value: string | Date): string {
+  public transform(value: string | Date): string {
     if (!value) return '';
 
     const date = new Date(value);

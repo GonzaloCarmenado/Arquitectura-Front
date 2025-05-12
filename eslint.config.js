@@ -22,9 +22,6 @@ module.exports = tseslint.config(
           style: "camelCase",
         },
       ],
-      "@typescript-eslint/no-explicit-any": "off",
-      "@angular-eslint/prefer-standalone": "off",
-      
       "@angular-eslint/component-selector": [
         "error",
         {
@@ -33,6 +30,54 @@ module.exports = tseslint.config(
           style: "kebab-case",
         },
       ],
+      "@typescript-eslint/no-explicit-any": "off",
+      "@angular-eslint/prefer-standalone": "off",
+      "@typescript-eslint/no-inferrable-types": "off",
+      "@angular-eslint/template/label-has-associated-control": "off",
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        {
+          "allowExpressions": true
+        }
+      ],
+      "@typescript-eslint/member-ordering": [
+        "error",
+        {
+          "default": ["field", "constructor", "method", "signature"]
+        }
+      ],
+      "@typescript-eslint/explicit-member-accessibility": [
+        "error",
+        {
+          "accessibility": "explicit",
+          "overrides": {
+            "accessors": "explicit",
+            "constructors": "no-public",
+            "methods": "explicit",
+            "properties": "explicit",
+            "parameterProperties": "explicit"
+          }
+        }
+      ],
+      "no-eq-null": 2,
+      "no-unused-vars": "off",
+      "max-lines": [
+        "error",
+        {
+          "max": 600,
+          "skipComments": true,
+          "skipBlankLines" : true
+        }
+      ],
+      "max-lines-per-function": [
+        "error",
+        {
+          "max": 75,
+          "skipBlankLines": true,
+          "skipComments": true
+        }
+      ],
+      "no-undef": "off",
     },
   },
   {

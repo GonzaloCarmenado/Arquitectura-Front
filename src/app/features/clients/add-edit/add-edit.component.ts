@@ -27,7 +27,7 @@ export class AddEditComponent implements OnInit {
     this.initFormData();
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     if (this.clientInput) {
       this.generateClientData(this.clientInput);
     }
