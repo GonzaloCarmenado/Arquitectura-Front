@@ -10,7 +10,8 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test:affected": "node run-changed-tests.js",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
