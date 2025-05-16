@@ -1,22 +1,22 @@
-import { Component, inject, Inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, inject, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ClientAddEditConstructorService } from './add-edit.constructor.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ClientAddEditAccessService } from './add-edit.acess.service';
 import { ClientModel } from '@gonzalocarmenado/common-connector-clients';
 import { ClientAddEditTransformationService } from './add-edit.transformation.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-add-edit',
   templateUrl: './add-edit.component.html',
   styleUrl: './add-edit.component.scss',
-  standalone: false
+  standalone: false,
 })
-export class AddEditComponent {
+export class AddEditComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
 
   public clientForm!: FormGroup;
-  public clientAPIData!:ClientModel;
+  public clientAPIData!: ClientModel;
   constructor(
     @Inject(MAT_DIALOG_DATA) public clientInput: number,
     private readonly constructorService: ClientAddEditConstructorService,
@@ -27,9 +27,9 @@ export class AddEditComponent {
     this.initFormData();
   }
 
-  public ngOnInit() {
-    if(this.clientInput ){
-      this.generateClientData(this.clientInput); 
+  public ngOnInit(): void {
+    if (this.clientInput) {
+      this.generateClientData(this.clientInput);
     }
   }
 
@@ -47,26 +47,33 @@ export class AddEditComponent {
    * @memberof AddEditComponent
    */
   public async saveClient(): Promise<void> {
-    const control: string | null = this.transformationService.validateClientForm(this.clientForm);
+    const control: string | null =
+      this.transformationService.validateClientForm(this.clientForm);
     if (control === null) {
-      if(this.clientAPIData){
-        let statusCode: number = await this.editClientData(this.transformationService.generateClientDTOFromForm(this.clientForm,this.clientAPIData));
-        if(statusCode === 200){
+      if (this.clientAPIData) {
+        const statusCode: number = await this.editClientData(
+          this.transformationService.generateClientDTOFromForm(
+            this.clientForm,
+            this.clientAPIData
+          )
+        );
+        if (statusCode === 200) {
           this.closeModal(statusCode);
         }
-      }else{
-        let statusCode: number = await this.saveClientData(this.transformationService.generateClientDTOFromForm(this.clientForm));
-        if(statusCode === 201){
+      } else {
+        const statusCode: number = await this.saveClientData(
+          this.transformationService.generateClientDTOFromForm(this.clientForm)
+        );
+        if (statusCode === 201) {
           this.closeModal(statusCode);
         }
       }
-    }else{
+    } else {
       this.snackBar.open(control);
     }
-
   }
 
-  public closeModal(statusCode?:number): void {
+  public closeModal(statusCode?: number): void {
     this.dialogRef.close(statusCode);
   }
   /**
@@ -77,7 +84,7 @@ export class AddEditComponent {
    * @return {*}  {Promise<void>}
    * @memberof AddEditComponent
    */
-  private async generateClientData(id:number):Promise<void>{
+  private async generateClientData(id: number): Promise<void> {
     this.clientAPIData = await this.getClientDataById(id);
     this.clientForm = this.constructorService.initFormData(this.clientAPIData);
   }

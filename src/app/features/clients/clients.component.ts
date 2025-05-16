@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-clients',
   templateUrl: './clients.component.html',
   styleUrl: './clients.component.scss',
-  standalone: false
+  standalone: false,
 })
-export class ClientsComponent {
-
-}
+export class ClientsComponent {}
