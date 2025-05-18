@@ -1,10 +1,11 @@
 const { spawnSync } = require("child_process");
 const fs = require("fs");
+const path = require("path");
 
 // Cargamos nuestro diccionario de datos, siendo una dupla de componente -> prueba afectada
 const map = require("./cypress/component-relation-map.json");
 
-// Obtiene los archivos modificados en los commits pendientes
+//Obtiene los archivos modificados en los commits pendientes
 const changedFiles = [
   ...new Set(
     spawnSync("git", ["diff", "--name-only", "HEAD", "HEAD~1"]) // Obtiene los archivos modificados entre el último commit (HEAD) y el commit anterior (HEAD~1)
@@ -12,27 +13,42 @@ const changedFiles = [
       .trim()
       .split("\n")
       .map(f => f.trim())
-      .filter(f => f.endsWith(".ts"))
+      .filter(f => !!f)
   ),
 ];
-// Obtiene los archivos modificados en el último commit
-// const changedFiles = [
+
+
+//console.log("Archivos modificados (raw):", rawChangedFiles);
+
+// Convertimos todos los archivos que no son .ts en su equivalente .ts (si aplicable)
+// const changedFiles =  [
 //   ...new Set(
-//     (spawnSync("git", ["diff", "--name-only", "--cached"]).stdout.toString() +
-//       spawnSync("git", ["diff", "--name-only"]).stdout.toString())
+//     spawnSync("git", ["status", "--porcelain"])
+//       .stdout.toString()
 //       .trim()
 //       .split("\n")
-//       .map(f => f.trim())
-//       .filter(f => f.endsWith(".ts"))
-//   ),
+//       .map(line => line.trim())
+//       .filter(line => line && /^[AMR]/.test(line))
+//       .map(line => line.replace(/^. /, "").trim()) 
+//       .filter(f => !!f)
+//   )
 // ];
+console.log(changedFiles)
+console.log("Archivos relevantes .ts (directos o inferidos):", changedFiles);
 
-console.log("Archivos modificados:", changedFiles);
+// Añadimos los .html como si fueran sus correspondientes .ts para buscar en el diccionario
+const normalizedChangedFiles = changedFiles.flatMap(file => {
+  if (file.endsWith(".html")) {
+    const tsEquivalent = file.replace(/\.html$/, ".ts");
+    return [file, tsEquivalent];
+  }
+  return [file];
+});
 
 const affectedTests = new Set();
 
 // Se buscan las pruebas que se ven afectadas tras la ejecución del script
-for (const file of changedFiles) {
+for (const file of normalizedChangedFiles) {
   const matched = map[file];
   if (matched) {
     matched.forEach(test => affectedTests.add(test));
