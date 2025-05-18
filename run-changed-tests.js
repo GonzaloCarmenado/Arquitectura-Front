@@ -8,7 +8,7 @@ const map = require("./cypress/component-relation-map.json");
 //Obtiene los archivos modificados en los commits pendientes
 const changedFiles = [
   ...new Set(
-    spawnSync("git", ["diff", "--name-only", "HEAD", "HEAD~1"]) // Obtiene los archivos modificados entre el último commit (HEAD) y el commit anterior (HEAD~1)
+    spawnSync("git", ["diff", "--name-only", "--cached"]) // archivos staged
       .stdout.toString()
       .trim()
       .split("\n")
