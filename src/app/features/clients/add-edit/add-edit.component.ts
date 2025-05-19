@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   standalone: false,
 })
 export class AddEditComponent implements OnInit {
-  private snackBar = inject(MatSnackBar);
+  private readonly snackBar = inject(MatSnackBar);
 
   public clientForm!: FormGroup;
   public clientAPIData!: ClientModel;
