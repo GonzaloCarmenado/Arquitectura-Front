@@ -70,13 +70,24 @@ let allTestsPassed = true;
 
 // Ejecutamos los comandos necesarios para hacer las pruebas con salida detallada en la terminal (modo headed)
 affectedTests.forEach(test => {
-  const result = spawnSync("npx", [
-    "cypress",
-    "run",
-    "--spec", test], {
-    stdio: "inherit",
-    shell: true,
-  });
+  // const result = spawnSync("npx", [
+  //   "cypress",
+  //   "run",
+  //   "--spec", test], {
+  //   stdio: "inherit",
+  //   shell: false,
+  // });
+  // console.log(result)
+  const cypressPath =
+  process.platform === "win32"
+    ? "node_modules/.bin/cypress.cmd"
+    : "node_modules/.bin/cypress";
+
+const result = spawnSync(cypressPath, ["run", "--spec", test], {
+  stdio: "inherit",
+  shell: false,
+});
+console.log(result)
   //Revisamos como ha terminado la prueba, mostrando si la prueba es existosa o no
   if (result.status !== 0) {
     console.error(`Test fallado: ${test}`);
