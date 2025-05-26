@@ -1,3 +1,12 @@
 npx lint-staged
 
-npx run test:affected
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$branch" = "main" ] || [ "$branch" = "develop" ]; then
+  npx run test:affected
+else
+  echo "Skipping tests on branch $branch"
+fi

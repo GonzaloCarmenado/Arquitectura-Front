@@ -70,14 +70,6 @@ let allTestsPassed = true;
 
 // Ejecutamos los comandos necesarios para hacer las pruebas con salida detallada en la terminal (modo headed)
 affectedTests.forEach(test => {
-  // const result = spawnSync("npx", [
-  //   "cypress",
-  //   "run",
-  //   "--spec", test], {
-  //   stdio: "inherit",
-  //   shell: false,
-  // });
-  // console.log(result)
   const cypressPath =
   process.platform === "win32"
     ? "node_modules/.bin/cypress.cmd"
