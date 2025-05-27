@@ -2,5 +2,5 @@ projectKey=Arquitectura-Front
 serverUrl=http://localhost:9000
 serverVersion=25.5.0.107428
 dashboardUrl=http://localhost:9000/dashboard?id=Arquitectura-Front
-ceTaskId=be6fb41d-fec3-467b-ba78-28552c22161f
-ceTaskUrl=http://localhost:9000/api/ce/task?id=be6fb41d-fec3-467b-ba78-28552c22161f
+ceTaskId=a3c93325-4186-49d4-b34c-8a03cee5affa
+ceTaskUrl=http://localhost:9000/api/ce/task?id=a3c93325-4186-49d4-b34c-8a03cee5affa
